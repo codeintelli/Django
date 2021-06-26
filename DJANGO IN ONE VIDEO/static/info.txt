@@ -1,0 +1,1 @@
+here you have to put your all file like css html JavaScript that you have used in your project and static files are file that is displayed on server
