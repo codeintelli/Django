@@ -1,0 +1,16 @@
+1. create new project
+    django-admin startproject projectname
+2. open that project in vscode 
+3. create application [open terminal]
+    python manage.py startapp appname
+4. create database that we want to migrate with django
+5. then go to setting .py file to tell that which database we are using in out project
+6. then go to url which is given before the database and then go into url there you have get the sql structure then copy that structure and paste it into setting.py and then fill details in settings.py like dbname,dbuser,dbpass,dbport,etc.[ and change engine must]
+
+now we are using model view controller 
+
+after that create model and database table field name and all
+
+and django must provide us form facility that we be we cant put in html that this is input type email field or this is input type text 
+
+

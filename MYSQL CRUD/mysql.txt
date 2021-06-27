@@ -1,4 +1,0 @@
-1. create new project
-    django-admin startproject projectname
-2. open that project in vscode 
-3. 
