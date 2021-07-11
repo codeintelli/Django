@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Empty Cart{% endblock title %}
+{% block main-content %}
+<div class="container">
+    <div class="row">
+        <div class="d-flex align-items-center">
+            <div class="content justify-content-start">
+                <h1>Please Add Some Product To Your Cart</h1>
+                <div class="text-center">
+                    <a href="{% url 'home' %}" class="btn btn-primary">Add Product</a></div>
+            </div>
+            <div class="img justify-content-end">
+                <img src="{% static 'images/empty-cart.png' %}" class="img-fluid  m-5 w-100 " alt=""></div>
+        </div>
+    </div>
+</div>
+{% endblock main-content %}

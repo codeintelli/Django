@@ -1,14 +1,35 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Buy Now{% endblock title %}
+{% block title %}Mobile{% endblock title %}
 {% block main-content %}
 <div class="container my-5">
  <div class="row">
   <div class="col-sm-3">
-   Side Bar for Mobile filter
+   <div class="list-group">
+       <a href="{% url 'mobile' %}" class="list-group-item list-group-item-action" aria-current="true">All Mobiles</a>
+       <a href="{% url 'mobiledata' 'IPHONE' %}" class="list-group-item list-group-item-action" aria-current="true">Iphone</a>
+       <a href="{% url 'mobiledata' 'SAMSUNG' %}" class="list-group-item list-group-item-action" aria-current="true">Samsung</a>
+       <a href="{% url 'mobiledata' 'below' %}" class="list-group-item list-group-item-action" aria-current="true">Less Than 50000</a>
+       <a href="{% url 'mobiledata' 'above' %}" class="list-group-item list-group-item-action" aria-current="true">More Than 50000</a>
+   </div>
   </div>
   <div class="col-sm-8 offset-sm-1">
-   Mobile Product List
+<div class="row">
+{% for product in mobilesdata %}
+
+  <div class="col-sm-4 text-center mb-4">
+      <a href="{% url 'product-detail' product.id %}" class="btn">
+          <div class="item">
+              <img src="{{product.product_image.url}}" height="300" alt="">
+              <div class="fw-fold">{{product.title}}</div>
+              <div class="fw-bold">Rs. {{product.discount_price}}
+                  <small class="fw-light text-decoration-line-through">{{product.selling_price}}</small>
+              </div>
+          </div>
+      </a>
+  </div>
+  {% endfor %}
+  </div>
   </div>
  </div>
 </div>
