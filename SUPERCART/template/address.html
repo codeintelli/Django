@@ -12,6 +12,11 @@
             </ul>
         </div>
         <div class="col-sm-9 offset-sm-1">
+
+{% if not data %}
+<h3> <a href="{% url 'profile' %}">Click Here</a> To Add Address</h3>
+
+{% else %}
             <div class="row">
 
                 {% for data in data %}
@@ -29,6 +34,7 @@
                     </div>
                 </div>
                 {% endfor %}
+{% endif %}
 
             </div>
         </div>

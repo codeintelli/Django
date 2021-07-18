@@ -49,8 +49,6 @@ class Product(models.Model):
         db_table = 'Product'
 
 
-
-
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -62,14 +60,19 @@ class Cart(models.Model):
     class Meta:
         db_table = 'Cart'
 
+    @property
+    def total_cost(self):
+        return self.quantity * self.product.discount_price
+
 
 STATUS_CHOICES = (
     ('Pending', 'Pending'),
-    ('Accept', 'Accpet'),
+    ('Accepted', 'Accepted'),
     ('Packed', 'Packed'),
     ('On The Way', 'On The Way'),
     ('Delivered', 'Delivered'),
-    ('Cancle', 'Cancle'),
+    ('Cancled', 'Cancled'),
+    ('Return', 'Return'),
 )
 
 
@@ -87,3 +90,26 @@ class OrderPlaced(models.Model):
 
     class Meta:
         db_table = 'OrderPlaced'
+
+    @property
+    def total_cost(self):
+        return self.quantity * self.product.discount_price
+
+
+class Cancledorders(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    orderplaced = models.ForeignKey(OrderPlaced, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    ordered_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.id)
+
+    class Meta:
+        db_table = 'OrderCancled'
+
+    @property
+    def total_cost(self):
+        return self.quantity * self.product.discount_price

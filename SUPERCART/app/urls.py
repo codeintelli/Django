@@ -50,16 +50,20 @@ urlpatterns = [
 
 
 
-    path('profile/', views.ProfileView.as_view(), name='profile'),
+    path('add-to-card/', views.add_to_cart, name='add-to-cart'),
     path('pluscart/', views.plusCart, name='pluscart'),
     path('minuscart/', views.minusCart, name='minuscart'),
     path('removecart/', views.removeCart, name='removecart'),
+
+
+
+    path('profile/', views.ProfileView.as_view(), name='profile'),
     path('address/', views.AddressView.as_view(), name='address'),
 
-    path('add-to-card/', views.add_to_cart, name='add-to-cart'),
     path('showcart/', views.showcart, name='showcart'),
     path('buy/', views.buy_now, name='buy-now'),
     path('orders/', views.orders, name='orders'),
+    path('paymentdone/', views.payment_done, name='paymentdone'),
     path('404/', views.PageNotFound, name='404 error'),
     path('checkout/', views.checkout, name='checkout'),
 

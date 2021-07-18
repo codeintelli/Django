@@ -1,41 +1,126 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block title %}Buy Now{% endblock title %}
-{% block main-content %}
+{% extends 'base.html' %} {% load static %} {% block title %}Buy Now 
+{% endblock title %} {% block main-content %}
 <div class="container">
- <div class="row mt-5">
-  <div class="col-sm-6">
-    <h4>Order Summary</h4>
-    <hr>
+  <div class="row mt-5">
+    <div class="col-sm-6">
+      <h4>Order Summary</h4>
+      <hr />
+      {% for cd in cart_items %}
+
       <div class="card mb-2">
         <div class="card-body">
-          <h5>Product: Product 1</h5>
-          <p>Quantity: 2</p>
-          <p class="fw-bold">Price: 100.00</p>
+          <h5>{{cd.product.title}}</h5>
+          <p>Quantity: {{cd.quantity}}</p>
+
+          <p class="fw-bold">
+            Price: {{cd.quantity}} * {{cd.product.discount_price}} =
+            {{cd.total_cost}}
+          </p>
+          <hr />
+          <p></p>
         </div>
       </div>
-    <small>Term and Condition: Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, ullam saepe! Iure optio repellat dolor velit, minus rem. Facilis cumque neque numquam laboriosam, accusantium adipisci nisi nihil in et quis?</small>
-  </div>
-  <div class="col-sm-4 offset-sm-1">
-    <h4>Select Shipping Address</h4>
-    <hr>
-    <form action="">
-      <div class="card">
-        <div class="card-body">
-        <h5>Sonam Kumari</h5>
-        <p>Hirapur Dhanbad Jharkahnd</p>
+      {% endfor %}
+      <p class="">
+        Total Cost :
+        <span class="fw-bold"
+          >{{amount}} + {{shipping_amount}} = {{total_amount}}</span
+        >
+      </p>
+        <p>Total Cost In $ :- <b>{{final_amount}}</b> </p>
+      <small
+        >Term and Condition: Lorem ipsum dolor sit amet consectetur adipisicing
+        elit. Mollitia, ullam saepe! Iure optio repellat dolor velit, minus rem.
+        Facilis cumque neque numquam laboriosam, accusantium adipisci nisi nihil
+        in et quis?</small>
+        <p><b>In Any Case If You Have Cancle/Return Your Product Then After 48 hours you will get Your Refund </b></p>
+    </div>
+    <div class="col-sm-4 offset-sm-1">
+      <h4>Select Shipping Address</h4>
+      <hr />
+      <form action="/paymentdone" id="myform">
+        {% for ad in add %}
+
+        <div class="card">
+          <div class="card-body">
+            <h5>{{ad.name}}</h5>
+            <p>
+              {{ad.locality}}, {{ad.city}},
+              <strong>
+                <br />
+                {{ad.state}}-{{ad.zipcode}}</strong
+              >
+            </p>
+          </div>
         </div>
-      </div>
         <div class="form-check mt-2 mb-5">
-          <input class="form-check-input" type="radio" value="">
+        
+          <input
+            class="form-check-input"
+            type="radio"
+            value="{{ad.id}}"
+            name="custid"
+            id="custadd{{forloop.counter}}" checked
+          />
           <label class="form-check-label fw-bold" for="">
-            Address: 1 </label>
+            Address:{{forloop.counter}}
+          </label>
         </div>
+        {% endfor %}
         <div class="text-end">
-          <button type="submit" class="btn btn-warning mt-3 px-5 fw-bold">Continue</button>
+         <!-- Set up a container element for the button -->
+          <div id="paypal-button-container"></div>
+          {% comment %} <button type="submit" class="btn btn-warning mt-3 px-5 fw-bold">
+            Continue
+          </button> {% endcomment %}
         </div>
       </form>
     </div>
   </div>
 </div>
 {% endblock main-content %}
+
+
+{% block payment_gateway %}
+
+ <!-- Include the PayPal JavaScript SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AQlFMwPDXtT2viBONXt4hVaFO4X1ZbpS5yBsMh8I0yQfz1QJMMmcGJdhGV37IIWGibgp0pcWviYoKG-1&currency=USD"></script>
+
+    <script>
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+
+          style: {
+                color:  'blue',
+                shape:  'pill',
+                label:  'pay',
+                height: 40
+            },
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '{{final_amount}}'
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // Show a success message to the buyer
+
+                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                    document.getElementById("myform").submit();
+                });
+            }
+
+
+        }).render('#paypal-button-container');
+    </script>
+
+
+{% endblock payment_gateway %}

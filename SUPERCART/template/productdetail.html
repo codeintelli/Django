@@ -14,17 +14,42 @@
    <p>{{product.description | safe}}</p> <br>
    <h4>Rs. {{product.discount_price}} <small class="fw-light text-decoration-line-through">{{product.selling_price}}</small></h4> <br>
 
-<form action='/add-to-card' id="myForm" class="d-inline">
-<input type="hidden" name="prod_id" value={{product.id}} id="prod_id" />
-{% comment %} <input type="hidden" name="user_id" value={{request.user.id}} /> {% endcomment %}
-<button class="btn btn-primary shadow px-5 py-2" type="submit">
-    Add To Cart
-</button>
-</form>
+
+
+
+
+{% if request.user.is_authenticated %}
+
+        {% if item_already_in_cart %}
+        
+        <a href="{% url 'showcart' %}" class="btn btn-warning shadow px-5 py-2 ms-4">Go To Cart</a>
+        {% else %}
+        <form action='/add-to-card' id="myForm" class="d-inline">
+        <input type="hidden" name="prod_id" value={{product.id}} id="prod_id" />
+        {% comment %} <input type="hidden" name="user_id" value={{request.user.id}} /> {% endcomment %}
+        <button class="btn btn-primary shadow px-5 py-2" type="submit">
+            Add To Cart
+        </button>
+        <button class="btn btn-danger shadow px-5 py-2 ms-4">Buy Now</button>
+        </form>
+        {% endif %}
+        
+        {% endif %}
+
+        {% if not request.user.is_authenticated %}
+        <form action='/accounts/login' id="myForm" class="d-inline">
+        {% comment %} <input type="hidden" name="prod_id" value={{product.id}} id="prod_id" /> {% endcomment %}
+        {% comment %} <input type="hidden" name="user_id" value={{request.user.id}} /> {% endcomment %}
+        <button class="btn btn-primary shadow px-5 py-2" type="submit">
+            Add To Cart
+        </button>
+        <button class="btn btn-danger shadow px-5 py-2 ms-4">Buy Now</button>
+        </form>
+        
+        {% endif %}
 
 
    {% comment %} <a href="{% url 'add-to-cart' %}" class="btn btn-primary shadow px-5 py-2">Add to Cart</a> {% endcomment %}
-   <a href="{% url 'buy-now' %}" class="btn btn-danger shadow px-5 py-2 ms-4">Buy Now</a>
    <h5 class="mt-5">Available Offers</h5>
    <ul>
     <li>Bank Offer 5% Unlimited Cashback on Flipkart Axis Bank Credit</li>

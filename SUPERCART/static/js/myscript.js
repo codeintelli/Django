@@ -64,6 +64,7 @@ $('.minus-cart').click(function () {
 });
 
 $('.remove-cart').click(function () {
+    console.log("deleted")
     var id = $(this).data("pid")
     console.log(id)
     var elm = this;
@@ -76,6 +77,8 @@ $('.remove-cart').click(function () {
             },
             success: function (data) {
                 console.log(data)
+                if(data.amount == 0){
+                location.reload()}
                 document.getElementById("amount").innerText = data.amount;
                 document.getElementById("totalamount").innerText = data.totalamount;
                 elm.parentNode.parentNode.parentNode.parentNode.remove()

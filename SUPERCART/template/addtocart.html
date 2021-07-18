@@ -10,15 +10,15 @@
                 <div class="card-body">
                     <h3 class="text-primary">Shopping Cart</h3>
                     {% for cart in cart %}
- <hr class="text-warning border border-2 border-warning rounded-pill">
 
                     <div class="row my-3">
-                        <div class="col-sm-3 text-center align-self-center"><img
-                                src="{{cart.product.product_image.url}}" alt="" srcset=""
-                                class="img-fluid img-thumbnail shadow-sm" height="150" width="150"> </div>
+ <hr class="text-warning border border-2 border-warning rounded-pill">
+                        <div class="col-sm-3 text-center align-self-center">
+                        <a href="{% url 'product-detail' cart.product %}">
+                        <img src="{{cart.product.product_image.url}}" alt="" srcset="" class="img-fluid img-thumbnail shadow-sm" height="150" width="150"></a> </div>
                         <div class="col-sm-9">
                             <div>
-                                <h5>{{cart.product.title}}</h5>
+                                <h5><a href="{% url 'product-detail' cart.product %}"> {{cart.product.title}}</a></h5>
                                 {% comment %} <p class="mb-2 text-muted small">Description: {{cart.product.description}}</p> {% endcomment %}
                                 <div class="my-3">
                                     <label for="quantity">Quantity:</label>

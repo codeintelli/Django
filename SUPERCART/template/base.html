@@ -142,7 +142,7 @@
               </li>
               <li class="nav-item mx-2">
                 <a href="{% url 'showcart' %}" class="nav-link text-dark"
-                  ><span class="badge bg-danger rounded-pill">4</span>
+                  ><span class="badge bg-danger rounded-pill">{{totalitem}}</span>
                   <i class="fas fa-shopping-cart"></i>
                 </a>
               </li>
@@ -163,8 +163,10 @@
         </div>
       </div>
     </nav>
-    {% block banner_slider %} {% endblock banner_slider %} {% block livesale %}
-    {% endblock livesale %} {% block main-content %} {% endblock main-content %}
+    {% block banner_slider %} {% endblock banner_slider %} 
+    {% block livesale %} {% endblock livesale %}
+     {% block main-content %} {% endblock main-content %}
+     {% block payment_gateway %}{% endblock payment_gateway %}
 
     <!-- Start Footer -->
     <footer class="container-fluid text-center shadow-lg p-2 ">
