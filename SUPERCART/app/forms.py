@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, User
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy, gettext as _
 from django.contrib.auth import password_validation
-from .models import Customer
+from .models import Customer, CancledOrders, ReturnOrders
 
 
 class CustomerRegistrationForm(UserCreationForm):
@@ -56,3 +56,38 @@ class CustomerProfileForm(forms.ModelForm):
         fields = ['name', 'locality', 'city', 'state', 'zipcode']
         widgets = {'name': forms.TextInput(attrs={'class': 'form-control'}), 'locality': forms.TextInput(attrs={'class': 'form-control'}), 'city': forms.TextInput(
             attrs={'class': 'form-control'}), 'state': forms.Select(attrs={'class': 'form-control'}), 'zipcode': forms.NumberInput(attrs={'class': 'form-control'})}
+
+
+class CancledOrdersForm(forms.ModelForm):
+    class Meta:
+        model = CancledOrders
+        fields = ['reason', 'bank_name', 'bank_acc',
+                  'bank_ifsc', 'holder_name', 'upi_id']
+        labels = {'reason': 'Cancle Product Reason', 'bank_name': 'Bank Name', 'bank_acc': 'Bank Account Number',
+                  'bank_ifsc': 'Bank IFSC Number', 'holder_name': 'Account Holder Name', 'upi_id': 'Upi Id'}
+        widgets = {
+            'reason': forms.Select(attrs={'class': 'form-control', 'required': 'true'}),
+            'bank_name': forms.Select(attrs={'class': 'form-control', 'required': 'true'}),
+            'bank_acc': forms.TextInput(attrs={'class': 'form-control', 'required': 'true'}),
+            'bank_ifsc': forms.TextInput(attrs={'class': 'form-control', 'required': 'true'}),
+            'holder_name': forms.TextInput(attrs={'class': 'form-control', 'required': 'true'}),
+            'upi_id': forms.TextInput(attrs={'class': 'form-control', 'required': 'true'}),
+        }
+
+
+class ReturnOrdersForm(forms.ModelForm):
+
+    class Meta:
+        model = ReturnOrders
+        fields = ['rreason', 'bank_name', 'bank_acc',
+                  'bank_ifsc', 'holder_name', 'upi_id']
+        labels = {'rreason': 'Return Product Reason', 'bank_name': 'Bank Name', 'bank_acc': 'Bank Account Number',
+                  'bank_ifsc': 'Bank IFSC Number', 'holder_name': 'Account Holder Name', 'upi_id': 'Upi Id'}
+        widgets = {
+            'rreason': forms.Select(attrs={'class': 'form-control'}),
+            'bank_name': forms.Select(attrs={'class': 'form-control'}),
+            'bank_acc': forms.TextInput(attrs={'class': 'form-control'}),
+            'bank_ifsc': forms.TextInput(attrs={'class': 'form-control'}),
+            'holder_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'upi_id': forms.TextInput(attrs={'class': 'form-control'}),
+        }

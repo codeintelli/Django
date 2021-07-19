@@ -66,5 +66,10 @@ urlpatterns = [
     path('paymentdone/', views.payment_done, name='paymentdone'),
     path('404/', views.PageNotFound, name='404 error'),
     path('checkout/', views.checkout, name='checkout'),
+    path('cancleorder/<int:id>', views.cancleorder.as_view(), name='cancleorder'),
+    path('returnorder/<int:id>', views.returnorder.as_view(), name='returnorder'),
+    path('cancleorderdata/<int:id>', views.cancleorderdata.as_view(), name='cancleorderdata'),
+    path('returnorderdata/<int:id>',
+         views.returnorderdata.as_view(), name='returnorderdata'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

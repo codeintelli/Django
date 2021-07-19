@@ -20,8 +20,12 @@
    {{fm.label_tag}} {{fm}}<small class="text-danger">{{fm.errors|striptags}}</small>
    </div>
    {% endfor %}
-   <input type="submit" class="btn btn-primary" value="Submit" />
+   <small>Your Password Should be Alphanumeric,Contain minimum 8 character And not similar to username</small>
    <br />
+   <br />
+<div class="text-center d-grid gap-2">
+   <input type="submit" class="btn  btn-outline-primary btn-block" value="Submit" />
+   </div><br />
    <div class="text-center text-primary fw-bold">
     <small>Existing User?  <a href="{% url 'login' %}" class="text-danger">
         Login Now

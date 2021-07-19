@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import (Customer, Product, Cart, OrderPlaced)
+from .models import (Customer, Product, Cart, OrderPlaced,
+                     ReturnOrders, CancledOrders)
 from django_summernote.admin import SummernoteModelAdmin
 
 
@@ -26,3 +27,15 @@ class CartModelAdmin(admin.ModelAdmin):
 class OrderPlacedModelAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'customer',
                     'product', 'quantity', 'ordered_date', 'status']
+
+
+@admin.register(ReturnOrders)
+class ReturnOrdersModelAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'orderplaced',
+                    'rreason', 'return_date', 'bank_name', 'bank_acc', 'bank_ifsc', 'holder_name', 'upi_id']
+
+
+@admin.register(CancledOrders)
+class CancledOrdersModelAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'orderplaced',
+                    'reason', 'cancle_date', 'bank_name', 'bank_acc', 'bank_ifsc', 'holder_name', 'upi_id']

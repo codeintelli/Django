@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Buy Now{% endblock title %}
+{% block main-content %}
+
+{% comment %} {{order.id}}
+{{order.quantity}}
+{{order.product.title}}
+{{order.total_cost}}
+{{order.product.product_image.url}} {% endcomment %}
+
+<div class="container my-5">
+<div class="row">
+ <div class="col-sm-9 offset-sm-1">
+        <div class="row shadow-sm border border-danger mb-3">
+            <div class="col-sm-2">
+                <img src="{{order.product.product_image.url}}" alt="" class="img-fluid my-3" height="150" width="150">
+            </div>
+            <div class="col-sm-7 my-3">
+                <p>{{order.id}}</p>
+                <p>Product: {{order.product.title}}</p>
+                <p>Quantity: {{order.quantity}}</p>
+                <p>Price: {{order.total_cost}}</p>
+            </div>
+        </div>
+</div>
+
+<h3 class="text-center">Please Fill The Form To Return This Order</h3>
+
+<form method="post" action="/returnorderdata/{{order.id}}"  novalidate onsubmit="return validate()" id="myForm">
+
+ {% if messages %}
+    {% for message in messages %}
+    <p{% if message.tags %} class="alert alert-{{ message.tags }} mb-3"{% endif %}>{{ message }}</p>
+    {% endfor %}
+{% endif %}
+   
+    {% csrf_token %}
+     {% for fm in form %}
+   <div class="form-group mb-3">
+   {{fm.label_tag}} {{fm}}<small class="text-danger">{{fm.errors|striptags}}</small>
+   </div>
+   {% endfor %}
+{% comment %} <input type="text" value={{order.id}} name="orderplaced" id="orderplaced" /> {% endcomment %}
+{% comment %} <p>{{order.id}}</p> {% endcomment %}
+    <div class="col-12 mt-3">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+
+     {% if form.non_field_errors %}
+    {% for error in form.non_field_errors %}
+    <p class="alert alert-danger my-3">{{error}}</p>
+    {% endfor %}
+    {% endif %}
+   </form>
+
+
+</div>
+</div>
+
+
+
+
+{% endblock main-content %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from .models import Customer, Product, Cart, OrderPlaced
-from .forms import CustomerRegistrationForm, CustomerProfileForm
+from .models import Customer, Product, Cart, OrderPlaced, ReturnOrders, CancledOrders
+from .forms import CustomerRegistrationForm, CustomerProfileForm, CancledOrdersForm, ReturnOrdersForm
 from django.contrib import messages
 from django.db.models import Q
 from django.http import JsonResponse
@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from google_currency import convert
 import json
+import random
+import datetime
 
 
 """ 
@@ -251,7 +253,7 @@ def checkout(request):
             main_amount = json.loads(a)
             print("main amount:- ", main_amount["amount"])
             final_amount = main_amount["amount"]
-        return render(request, 'checkout.html', {'add': add, 'total_amount': total_amount, 'cart_items': cart_items,'final_amount':final_amount, 'amount': amount, 'shipping_amount': shipping_amount})
+        return render(request, 'checkout.html', {'add': add, 'total_amount': total_amount, 'cart_items': cart_items, 'final_amount': final_amount, 'amount': amount, 'shipping_amount': shipping_amount})
     else:
         return redirect('/accounts/login')
 
@@ -281,9 +283,69 @@ def orders(request):
     if request.user.is_authenticated:
         user = request.user
         order_data = OrderPlaced.objects.all()
+
         return render(request, 'orders.html', {'order_data': order_data})
     else:
         return redirect('/accounts/login')
+
+
+class returnorder(View):
+    def get(self, request, id):
+        order = OrderPlaced.objects.get(id=id)
+        form = ReturnOrdersForm()
+        print("order id", order)
+        return render(request, 'returnorder.html', {'order': order, 'form': form})
+
+
+class returnorderdata(View):
+    def post(self, request, id):
+        form = ReturnOrdersForm(request.POST)
+        if form.is_valid():
+            user = request.user
+            order = OrderPlaced.objects.get(id=id)
+            print("orderplaced id:-===========", order)
+            rreason = form.cleaned_data['rreason']
+            bank_name = form.cleaned_data['bank_name']
+            bank_acc = form.cleaned_data['bank_acc']
+            bank_ifsc = form.cleaned_data['bank_ifsc']
+            holder_name = form.cleaned_data['holder_name']
+            upi_id = form.cleaned_data['upi_id']
+            reg = ReturnOrders(user=user, orderplaced=order, rreason=rreason,
+                               bank_name=bank_name, bank_acc=bank_acc, bank_ifsc=bank_ifsc, holder_name=holder_name, upi_id=upi_id)
+            reg.save()
+
+            order.status = "Return"
+            order.save()
+            return redirect('/orders')
+
+
+class cancleorderdata(View):
+    def post(self, request, id):
+        form = CancledOrdersForm(request.POST)
+        if form.is_valid():
+            user = request.user
+            order = OrderPlaced.objects.get(id=id)
+            reason = form.cleaned_data['reason']
+            bank_name = form.cleaned_data['bank_name']
+            bank_acc = form.cleaned_data['bank_acc']
+            bank_ifsc = form.cleaned_data['bank_ifsc']
+            holder_name = form.cleaned_data['holder_name']
+            upi_id = form.cleaned_data['upi_id']
+            reg = CancledOrders(user=user, orderplaced=order, reason=reason,
+                                bank_name=bank_name, bank_acc=bank_acc, bank_ifsc=bank_ifsc, holder_name=holder_name, upi_id=upi_id)
+            reg.save()
+            order.status = "Cancled"
+
+            order.save()
+            return redirect('/orders')
+
+
+class cancleorder(View):
+    def get(self, request, id):
+        order = OrderPlaced.objects.get(id=id)
+        form = CancledOrdersForm()
+        print("order id", order)
+        return render(request, 'cancleorder.html', {'order': order, 'form': form})
 
 
 def PageNotFound(request):
